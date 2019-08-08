@@ -3,6 +3,23 @@
            https://api.github.com/users/<your name>
 */
 
+const followersArray = ['ddaskan', 'adilzeshan', 'UmutKor', 'dyna-dot','brudnak', 'louismoura'];
+
+async function gitHubData() {
+  const userNames = followersArray.map(user => axios.get(`https://api.github.com/users/${user}`));
+  // console.log(userNames);
+
+  Promise.all(userNames).then(result => {
+    const res = result.map(r => r.data)
+    console.log(res)
+  })
+  .catch ((error) => {
+    console.log(error)
+  });
+} 
+
+// console.log(gitHubData());
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -24,7 +41,7 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -43,8 +60,10 @@ const followersArray = [];
     <p>Bio: {users bio}</p>
   </div>
 </div>
-
 */
+function gitHubComponent(params) {
+  
+}
 
 /* List of LS Instructors Github username's: 
   tetondan
