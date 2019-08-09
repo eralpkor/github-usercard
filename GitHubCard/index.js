@@ -3,22 +3,11 @@
            https://api.github.com/users/<your name>
 */
 
-const followersArray = ['ddaskan', 'adilzeshan', 'UmutKor', 'dyna-dot','brudnak', 'louismoura'];
+const followersArray = ['ddaskan', 'adilzeshan', 'UmutKor', 'dyna-dot', 'brudnak', 'louismoura', 'tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell'];
 
-async function gitHubData() {
-  const userNames = followersArray.map(user => axios.get(`https://api.github.com/users/${user}`));
-  // console.log(userNames);
+var res = [];
 
-  Promise.all(userNames).then(result => {
-    const res = result.map(r => r.data)
-    console.log(res)
-  })
-  .catch ((error) => {
-    console.log(error)
-  });
-} 
 
-// console.log(gitHubData());
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -61,9 +50,76 @@ async function gitHubData() {
   </div>
 </div>
 */
+const cards = document.querySelector('.cards');
+
 function gitHubComponent(params) {
-  
+  // create elements
+  let card = document.createElement('div');
+  card.classList.add('card');
+
+  let newImage = document.createElement('img');
+  newImage.classList.add('user-img');
+  // newImage.src = params;
+
+  let cardInfo = document.createElement('div');
+  cardInfo.classList.add('card-info');
+
+  let usersName = document.createElement('h3');
+  usersName.classList.add('name');
+
+  let usersUserName = document.createElement('p');
+  usersUserName.classList.add('username');
+
+  let location = document.createElement('p');
+  let profile = document.createElement('p');
+  let link = document.createElement('a');
+  let followers = document.createElement('p');
+  let following = document.createElement('p');
+  let bio = document.createElement('p');
+
+  // append to div
+  card.appendChild(newImage);
+  card.appendChild(cardInfo);
+  cardInfo.appendChild(usersName);
+  cardInfo.appendChild(usersUserName);
+  cardInfo.appendChild(location);
+  cardInfo.appendChild(profile)
+  profile.appendChild(link);
+  cardInfo.appendChild(followers);
+  cardInfo.appendChild(following);
+  cardInfo.appendChild(bio);
+
+  newImage.src = params.avatar_url;
+  usersName.textContent = params.name;
+  usersUserName.textContent = params.login;
+  location.textContent = `Location: ${params.location}`;
+  profile.textContent = `Profile: `;
+  profile.innerHTML += `<a href=${params.html_url}>${params.html_url}</a>`;
+
+  followers.textContent = `Followers: ${String(params.followers)}`;
+  following.textContent = `Following: ${String(params.following)}`;
+  bio.textContent = `Bio: ${params.bio}`;
+
+  return card;
 }
+
+(async (arr) => {
+  const userNames = arr.map(user => axios.get(`https://api.github.com/users/${user}`));
+
+  Promise.all(userNames).then(result => {
+      res = result.map(r => r.data)
+      console.log(res)
+      res.map(function (users) {
+        cards.appendChild(gitHubComponent(users))
+      })
+    })
+    .catch((error) => {
+      console.log(error)
+    });
+
+})(followersArray);
+
+
 
 /* List of LS Instructors Github username's: 
   tetondan
