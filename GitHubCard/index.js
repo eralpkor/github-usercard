@@ -7,8 +7,21 @@ const followersArray = ['ddaskan', 'adilzeshan', 'UmutKor', 'dyna-dot', 'brudnak
 
 var res = [];
 
+// function myFollowers(userName) {
 
+//   const userNames = arr.map(user => axios.get(`https://api.github.com/users/${user}`));
 
+//   axios.get(`https://api.github.com/users/${userName}/followers`)
+//     .then(response => {
+//       let names = response.map(r => r.login)
+//       console.log(names)
+//       // result.map(function (followers) {
+//       //   return followers.login;
+//       // })
+//     })
+// }
+
+// myFollowers('eralpkor')
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -80,21 +93,27 @@ function gitHubComponent(params) {
   // append to div
   card.appendChild(newImage);
   card.appendChild(cardInfo);
-  cardInfo.appendChild(usersName);
-  cardInfo.appendChild(usersUserName);
-  cardInfo.appendChild(location);
-  cardInfo.appendChild(profile)
-  profile.appendChild(link);
-  cardInfo.appendChild(followers);
-  cardInfo.appendChild(following);
-  cardInfo.appendChild(bio);
+  // cardInfo.appendChild(usersName);
+  // cardInfo.appendChild(usersUserName);
+  // cardInfo.appendChild(location);
+  // cardInfo.appendChild(profile)
+  // profile.appendChild(link);
+  // cardInfo.appendChild(followers);
+  // cardInfo.appendChild(following);
+  // cardInfo.appendChild(bio);
+
+  cardInfo.append(usersName, usersUserName, location, profile, followers, following, bio);
+  profile.append(link);
 
   newImage.src = params.avatar_url;
   usersName.textContent = params.name;
   usersUserName.textContent = params.login;
   location.textContent = `Location: ${params.location}`;
   profile.textContent = `Profile: `;
+  // link.href = params.html_url
+  // link.textContent = params.html_url
   profile.innerHTML += `<a href=${params.html_url}>${params.html_url}</a>`;
+
 
   followers.textContent = `Followers: ${String(params.followers)}`;
   following.textContent = `Following: ${String(params.following)}`;
@@ -103,12 +122,13 @@ function gitHubComponent(params) {
   return card;
 }
 
+// Async IIFE to fetch data
 (async (arr) => {
   const userNames = arr.map(user => axios.get(`https://api.github.com/users/${user}`));
 
   Promise.all(userNames).then(result => {
       res = result.map(r => r.data)
-      console.log(res)
+      // console.log(res)
       res.map(function (users) {
         cards.appendChild(gitHubComponent(users))
       })
